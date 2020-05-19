@@ -1,6 +1,6 @@
 
 /*
- * Classe per...
+ * Classe utilizzata per contare le occorrenze e calcolare la classe support e confidence
  * 
  * parametri:
  * name: nome della Y
