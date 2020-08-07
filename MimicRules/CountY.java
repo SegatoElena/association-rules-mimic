@@ -23,6 +23,7 @@ public class CountY {
 		name = "";
 		count = 0;
 		support = 0;
+		confidence = 0;
 	}
 	
 	/*
@@ -44,6 +45,7 @@ public class CountY {
 	 * Non ritorna nulla
 	 */
 	public void rules(int den, int countX) {
+		System.out.println(count);
 		support = count / den;
 		confidence = count / countX;
 	}
@@ -69,4 +71,18 @@ public class CountY {
 		return false;
 	}
 	
+	/*mi serve il to string
+	
+	@Override
+	public String toString() {
+		String output = "";
+		
+		for(int i = 0; i < CountY.size(); i++) {
+			output += " " + CountY.get(i);
+			
+		}
+		
+		return output;
+	}
+	*/
 }
