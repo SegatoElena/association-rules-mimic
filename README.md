@@ -1,6 +1,6 @@
 # association-rules-mimic
 
-Classi - MimicRules:
+Class - MimicRules:
  
 DBConnector: Class to manage and create communication with the database
 Righe: Class used to represent database rows. It is used to perform calculations on the query results.
