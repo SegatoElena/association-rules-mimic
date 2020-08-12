@@ -42,7 +42,7 @@ public class CountY {
 	 * den: denominatore, numero totale di righe ottenute della query
 	 * countX: numero di righe in cui i valori di X sono presenti nella tabella della query
 	 * 
-	 * Non ritorna nulla
+	 * Non ritorna null
 	 */
 	public void rules(int den, int countX) {
 		System.out.println(count);
@@ -52,7 +52,7 @@ public class CountY {
 
 	
 	/*
-	 * ritorno un valore valore hahcode
+	 * ritorno un valore valore hashcode
 	 */
 	@Override
 	public int hashCode() {

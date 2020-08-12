@@ -4,6 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class main {
+	/*
+	 * Funzione principale che si interfaccia con la classe DBConnector per comunicare con il database
+	 * e con la classe Rule per il calcolo della support e della confidence
+	 */
+			
 	public static void main(String[] args) {
 		
 	    Rule rule = new Rule();
