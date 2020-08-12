@@ -1,0 +1,154 @@
+Sample values:
+x: [ measure, trend_pre ]
+y: [ event ]
+
+Successful connection - Schema: tefd
+=========================================
+SELECT measure, trend_pre, COUNT(*) FROM tefd.atear_divided_results GROUP BY measure, trend_pre HAVING COUNT(*) > (108224.40000000001);
+> QUERY DONE
+> LIST'S CREATED
+> CALCULATING SUPPORT DONE
+
+X -> Y | SUPPORT (%) | CONFIDENCE (%)
+SELECT event, COUNT(*) FROM tefd.atear_divided_results WHERE measure = 'Body Temperature' AND  trend_pre= 'STEADY' GROUP BY event HAVING COUNT(*) > (2975.04) ORDER BY COUNT(*) DESC;
+ Body Temperature STEADY -> Insulin - Regular|NaCl 0.9% | 2.7489550411701202% | 7.33301043510437%
+ Body Temperature STEADY -> Phenylephrine|NaCl 0.9% | 2.7489550411701202% | 6.436888128519058%
+ Body Temperature STEADY -> Dextrose 5%|Nitroglycerin | 2.7489550411701202% | 5.694041028618813%
+ Body Temperature STEADY -> Norepinephrine|NaCl 0.9% | 2.7489550411701202% | 5.064133554697037%
+ Body Temperature STEADY -> Propofol|Solution | 2.7489550411701202% | 3.8940653204917908%
+ Body Temperature STEADY -> NaCl 0.9% | 2.7489550411701202% | 3.5004571080207825%
+ Body Temperature STEADY -> Morphine Sulfate | 2.7489550411701202% | 3.2907120883464813%
+ Body Temperature STEADY -> Insulin - Regular | 2.7489550411701202% | 2.343497984111309%
+ Body Temperature STEADY -> Potassium Chloride|KCL (Bolus) | 2.7489550411701202% | 2.1576181054115295%
+ Body Temperature STEADY -> LR | 2.7489550411701202% | 1.6863638535141945%
+ Body Temperature STEADY -> Fentanyl | 2.7489550411701202% | 1.6067011281847954%
+ Body Temperature STEADY -> Packed Red Blood Cells | 2.7489550411701202% | 1.4897278510034084%
+ Body Temperature STEADY -> PO Intake | 2.7489550411701202% | 1.3485533185303211%
+ Body Temperature STEADY -> Propofol|Propofol|Solution|Solution | 2.7489550411701202% | 1.2409917078912258%
+ Body Temperature STEADY -> Dextrose 5%|Vancomycin | 2.7489550411701202% | 1.2228406965732574%
+ Body Temperature STEADY -> Sterile Water|Sterile Water|KCl (CRRT)|KCl (CRRT) | 2.7489550411701202% | 1.1132623068988323%
+ Body Temperature STEADY -> Gastric Meds | 2.7489550411701202% | 1.035616360604763%
+
+SELECT event, COUNT(*) FROM tefd.atear_divided_results WHERE measure = 'Diastolic Blood Pressure' AND  trend_pre= 'STEADY' GROUP BY event HAVING COUNT(*) > (2330.56) ORDER BY COUNT(*) DESC;
+ Diastolic Blood Pressure STEADY -> Norepinephrine|NaCl 0.9% | 2.7489550411701202% | 3.6792781203985214%
+ Diastolic Blood Pressure STEADY -> Phenylephrine|NaCl 0.9% | 2.7489550411701202% | 2.9972705990076065%
+ Diastolic Blood Pressure STEADY -> Insulin - Regular|NaCl 0.9% | 2.7489550411701202% | 2.6913924142718315%
+ Diastolic Blood Pressure STEADY -> NaCl 0.9% | 2.7489550411701202% | 2.552906796336174%
+ Diastolic Blood Pressure STEADY -> Propofol|Solution | 2.7489550411701202% | 2.352237328886986%
+ Diastolic Blood Pressure STEADY -> Fentanyl | 2.7489550411701202% | 2.059132046997547%
+ Diastolic Blood Pressure STEADY -> Insulin - Regular | 2.7489550411701202% | 2.02686358243227%
+ Diastolic Blood Pressure STEADY -> Gastric Meds | 2.7489550411701202% | 1.700817421078682%
+ Diastolic Blood Pressure STEADY -> Propofol|Propofol|Solution|Solution | 2.7489550411701202% | 1.4305690303444862%
+ Diastolic Blood Pressure STEADY -> Potassium Chloride|KCL (Bolus) | 2.7489550411701202% | 1.3219990767538548%
+ Diastolic Blood Pressure STEADY -> Heparin Sodium (Prophylaxis) | 2.7489550411701202% | 1.2107400223612785%
+ Diastolic Blood Pressure STEADY -> PO Intake | 2.7489550411701202% | 1.117295864969492%
+ Diastolic Blood Pressure STEADY -> Gastric Meds|GT Flush | 2.7489550411701202% | 1.020154356956482%
+ Diastolic Blood Pressure STEADY -> Morphine Sulfate | 2.7489550411701202% | 1.0178014636039734%
+ Diastolic Blood Pressure STEADY -> Fentanyl (Concentrate)|Solution | 2.7489550411701202% | 0.952928327023983%
+ Diastolic Blood Pressure STEADY -> Dextrose 5%|Vancomycin | 2.7489550411701202% | 0.9495670907199383%
+ Diastolic Blood Pressure STEADY -> Midazolam (Versed)|NaCl 0.9% | 2.7489550411701202% | 0.9186430834233761%
+ Diastolic Blood Pressure STEADY -> Dextrose 5%|Nitroglycerin | 2.7489550411701202% | 0.9105759672820568%
+ Diastolic Blood Pressure STEADY -> Metoprolol | 2.7489550411701202% | 0.8961223997175694%
+ Diastolic Blood Pressure STEADY -> Packed Red Blood Cells | 2.7489550411701202% | 0.8615010417997837%
+ Diastolic Blood Pressure STEADY -> Nicardipine|NaCl 0.9% | 2.7489550411701202% | 0.8581397123634815%
+ Diastolic Blood Pressure STEADY -> Sterile Water|Sterile Water|KCl (CRRT)|KCl (CRRT) | 2.7489550411701202% | 0.838980358093977%
+ Diastolic Blood Pressure STEADY -> Propofol|Propofol|Propofol|Solution|Solution|Solution | 2.7489550411701202% | 0.8013337850570679%
+ Diastolic Blood Pressure STEADY -> Hydromorphone (Dilaudid) | 2.7489550411701202% | 0.7912498898804188%
+
+SELECT event, COUNT(*) FROM tefd.atear_divided_results WHERE measure = 'Heart Rate' AND  trend_pre= 'STEADY' GROUP BY event HAVING COUNT(*) > (20556.4) ORDER BY COUNT(*) DESC;
+ Heart Rate STEADY -> PO Intake | 2.7489550411701202% | 32.25637376308441%
+ Heart Rate STEADY -> Norepinephrine|NaCl 0.9% | 2.7489550411701202% | 30.864796042442322%
+ Heart Rate STEADY -> NaCl 0.9% | 2.7489550411701202% | 26.350906491279602%
+ Heart Rate STEADY -> Phenylephrine|NaCl 0.9% | 2.7489550411701202% | 24.636979401111603%
+ Heart Rate STEADY -> Propofol|Solution | 2.7489550411701202% | 19.203102588653564%
+ Heart Rate STEADY -> Insulin - Regular|NaCl 0.9% | 2.7489550411701202% | 18.087151646614075%
+ Heart Rate STEADY -> Insulin - Regular | 2.7489550411701202% | 17.084476351737976%
+ Heart Rate STEADY -> Fentanyl | 2.7489550411701202% | 15.78466147184372%
+ Heart Rate STEADY -> Gastric Meds | 2.7489550411701202% | 14.772909879684448%
+ Heart Rate STEADY -> Heparin Sodium (Prophylaxis) | 2.7489550411701202% | 13.270074129104614%
+ Heart Rate STEADY -> Potassium Chloride|KCL (Bolus) | 2.7489550411701202% | 10.547421127557755%
+ Heart Rate STEADY -> Morphine Sulfate | 2.7489550411701202% | 9.981714189052582%
+ Heart Rate STEADY -> Dextrose 5%|Vancomycin | 2.7489550411701202% | 9.97868925333023%
+ Heart Rate STEADY -> Dextrose 5%|Nitroglycerin | 2.7489550411701202% | 8.659379184246063%
+ Heart Rate STEADY -> Propofol|Propofol|Solution|Solution | 2.7489550411701202% | 8.629463613033295%
+ Heart Rate STEADY -> Packed Red Blood Cells | 2.7489550411701202% | 8.49299505352974%
+ Heart Rate STEADY -> Insulin - Humalog | 2.7489550411701202% | 8.429466187953949%
+ Heart Rate STEADY -> Gastric Meds|GT Flush | 2.7489550411701202% | 8.296022564172745%
+ Heart Rate STEADY -> Hydromorphone (Dilaudid) | 2.7489550411701202% | 8.084261417388916%
+ Heart Rate STEADY -> LR | 2.7489550411701202% | 7.863759994506836%
+ Heart Rate STEADY -> Dextrose 5%|Piperacillin/Tazobactam (Zosyn) | 2.7489550411701202% | 7.350153475999832%
+ Heart Rate STEADY -> Furosemide (Lasix) | 2.7489550411701202% | 7.302086800336838%
+
+SELECT event, COUNT(*) FROM tefd.atear_divided_results WHERE measure = 'Respiratory Rate' AND  trend_pre= 'STEADY' GROUP BY event HAVING COUNT(*) > (2803.94) ORDER BY COUNT(*) DESC;
+ Respiratory Rate STEADY -> Norepinephrine|NaCl 0.9% | 2.7489550411701202% | 6.759572774171829%
+ Respiratory Rate STEADY -> Phenylephrine|NaCl 0.9% | 2.7489550411701202% | 4.788170754909515%
+ Respiratory Rate STEADY -> NaCl 0.9% | 2.7489550411701202% | 3.1653355807065964%
+ Respiratory Rate STEADY -> Insulin - Regular|NaCl 0.9% | 2.7489550411701202% | 2.702484652400017%
+ Respiratory Rate STEADY -> Propofol|Solution | 2.7489550411701202% | 2.427194267511368%
+ Respiratory Rate STEADY -> Propofol|Propofol|Solution|Solution | 2.7489550411701202% | 2.121652103960514%
+ Respiratory Rate STEADY -> Fentanyl | 2.7489550411701202% | 1.986864022910595%
+ Respiratory Rate STEADY -> Midazolam (Versed)|NaCl 0.9% | 2.7489550411701202% | 1.8944283947348595%
+ Respiratory Rate STEADY -> Gastric Meds | 2.7489550411701202% | 1.6251882538199425%
+ Respiratory Rate STEADY -> Fentanyl (Concentrate)|Solution | 2.7489550411701202% | 1.5394750982522964%
+ Respiratory Rate STEADY -> Insulin - Regular | 2.7489550411701202% | 1.5125847421586514%
+ Respiratory Rate STEADY -> Potassium Chloride|KCL (Bolus) | 2.7489550411701202% | 1.303847972303629%
+ Respiratory Rate STEADY -> Heparin Sodium (Prophylaxis) | 2.7489550411701202% | 1.3001506216824055%
+ Respiratory Rate STEADY -> Dextrose 5%|Vancomycin | 2.7489550411701202% | 1.242672372609377%
+ Respiratory Rate STEADY -> Dextrose 5%|Cisatracurium | 2.7489550411701202% | 1.2060342356562614%
+ Respiratory Rate STEADY -> Packed Red Blood Cells | 2.7489550411701202% | 1.0820022784173489%
+ Respiratory Rate STEADY -> Fentanyl (Concentrate)|Fentanyl (Concentrate)|Solution|Solution | 2.7489550411701202% | 1.035616360604763%
+ Respiratory Rate STEADY -> Sterile Water|Sterile Water|KCl (CRRT)|KCl (CRRT) | 2.7489550411701202% | 0.9603232145309448%
+ Respiratory Rate STEADY -> Gastric Meds|GT Flush | 2.7489550411701202% | 0.9536006487905979%
+
+SELECT event, COUNT(*) FROM tefd.atear_divided_results WHERE measure = 'SpO2' AND  trend_pre= 'STEADY' GROUP BY event HAVING COUNT(*) > (75246.44) ORDER BY COUNT(*) DESC;
+ SpO2 STEADY -> PO Intake | 2.7489550411701202% | 98.83833527565002%
+ SpO2 STEADY -> Phenylephrine|NaCl 0.9% | 2.7489550411701202% | 96.54324054718018%
+ SpO2 STEADY -> Norepinephrine|NaCl 0.9% | 2.7489550411701202% | 92.85286664962769%
+ SpO2 STEADY -> NaCl 0.9% | 2.7489550411701202% | 91.53355956077576%
+ SpO2 STEADY -> Propofol|Solution | 2.7489550411701202% | 87.13160157203674%
+ SpO2 STEADY -> Fentanyl | 2.7489550411701202% | 68.23135018348694%
+ SpO2 STEADY -> Insulin - Regular | 2.7489550411701202% | 64.49997425079346%
+ SpO2 STEADY -> Gastric Meds | 2.7489550411701202% | 60.86876392364502%
+ SpO2 STEADY -> Insulin - Regular|NaCl 0.9% | 2.7489550411701202% | 58.61769914627075%
+ SpO2 STEADY -> Heparin Sodium (Prophylaxis) | 2.7489550411701202% | 50.998640060424805%
+ SpO2 STEADY -> Potassium Chloride|KCL (Bolus) | 2.7489550411701202% | 39.940640330314636%
+ SpO2 STEADY -> Gastric Meds|GT Flush | 2.7489550411701202% | 36.66975796222687%
+ SpO2 STEADY -> Dextrose 5%|Vancomycin | 2.7489550411701202% | 35.47414541244507%
+ SpO2 STEADY -> Dextrose 5%|Nitroglycerin | 2.7489550411701202% | 33.304426074028015%
+ SpO2 STEADY -> Metoprolol | 2.7489550411701202% | 32.949137687683105%
+ SpO2 STEADY -> Morphine Sulfate | 2.7489550411701202% | 32.766953110694885%
+ SpO2 STEADY -> Propofol|Propofol|Solution|Solution | 2.7489550411701202% | 32.06276297569275%
+ SpO2 STEADY -> Hydromorphone (Dilaudid) | 2.7489550411701202% | 30.394548177719116%
+ SpO2 STEADY -> LR | 2.7489550411701202% | 27.8160959482193%
+ SpO2 STEADY -> Insulin - Humalog | 2.7489550411701202% | 27.64803171157837%
+ SpO2 STEADY -> GT Flush | 2.7489550411701202% | 27.25106179714203%
+ SpO2 STEADY -> Fentanyl (Concentrate)|Solution | 2.7489550411701202% | 26.728379726409912%
+ SpO2 STEADY -> Packed Red Blood Cells | 2.7489550411701202% | 26.415443420410156%
+ SpO2 STEADY -> Midazolam (Versed)|NaCl 0.9% | 2.7489550411701202% | 25.552260875701904%
+ SpO2 STEADY -> Dextrose 5%|Piperacillin/Tazobactam (Zosyn) | 2.7489550411701202% | 25.47932267189026%
+
+SELECT event, COUNT(*) FROM tefd.atear_divided_results WHERE measure = 'Systolic Blood Pressure' AND  trend_pre= 'STEADY' GROUP BY event HAVING COUNT(*) > (2587.4) ORDER BY COUNT(*) DESC;
+ Systolic Blood Pressure STEADY -> Norepinephrine|NaCl 0.9% | 2.7489550411701202% | 3.316257894039154%
+ Systolic Blood Pressure STEADY -> NaCl 0.9% | 2.7489550411701202% | 2.962985448539257%
+ Systolic Blood Pressure STEADY -> Phenylephrine|NaCl 0.9% | 2.7489550411701202% | 2.8110546991229057%
+ Systolic Blood Pressure STEADY -> Propofol|Solution | 2.7489550411701202% | 2.4450091645121574%
+ Systolic Blood Pressure STEADY -> Fentanyl | 2.7489550411701202% | 2.3871947079896927%
+ Systolic Blood Pressure STEADY -> Insulin - Regular | 2.7489550411701202% | 2.314254641532898%
+ Systolic Blood Pressure STEADY -> Insulin - Regular|NaCl 0.9% | 2.7489550411701202% | 2.3065235465765%
+ Systolic Blood Pressure STEADY -> Gastric Meds | 2.7489550411701202% | 2.1391309797763824%
+ Systolic Blood Pressure STEADY -> PO Intake | 2.7489550411701202% | 1.6440115869045258%
+ Systolic Blood Pressure STEADY -> Potassium Chloride|KCL (Bolus) | 2.7489550411701202% | 1.5482144430279732%
+ Systolic Blood Pressure STEADY -> Heparin Sodium (Prophylaxis) | 2.7489550411701202% | 1.4645181596279144%
+ Systolic Blood Pressure STEADY -> Propofol|Propofol|Solution|Solution | 2.7489550411701202% | 1.4114095829427242%
+ Systolic Blood Pressure STEADY -> Gastric Meds|GT Flush | 2.7489550411701202% | 1.2893944047391415%
+ Systolic Blood Pressure STEADY -> Dextrose 5%|Vancomycin | 2.7489550411701202% | 1.0756158269941807%
+ Systolic Blood Pressure STEADY -> Nicardipine|NaCl 0.9% | 2.7489550411701202% | 1.0504060424864292%
+ Systolic Blood Pressure STEADY -> Morphine Sulfate | 2.7489550411701202% | 1.0467085987329483%
+ Systolic Blood Pressure STEADY -> Sterile Water|Sterile Water|KCl (CRRT)|KCl (CRRT) | 2.7489550411701202% | 1.02855758741498%
+ Systolic Blood Pressure STEADY -> Metoprolol | 2.7489550411701202% | 0.9999865666031837%
+ Systolic Blood Pressure STEADY -> Fentanyl (Concentrate)|Solution | 2.7489550411701202% | 0.9589786641299725%
+ Systolic Blood Pressure STEADY -> Midazolam (Versed)|NaCl 0.9% | 2.7489550411701202% | 0.9586425498127937%
+ Systolic Blood Pressure STEADY -> Dextrose 5%|Piperacillin/Tazobactam (Zosyn) | 2.7489550411701202% | 0.9149456396698952%
+ Systolic Blood Pressure STEADY -> NaCl 0.9%|NaCl 0.9% | 2.7489550411701202% | 0.9035172872245312%
+
+DONE
