@@ -1,5 +1,13 @@
 # association-rules-mimic
 
-Dati in input uno o più valori (che possono riferirsi a measure pre_event event post_event) calcolo l'associazione, con un determinato valore di support e/o confidence, con uno dei valori non inserito in input.
+Classi - MimicRules:
+ 
+DBConnector: Class to manage and create communication with the database
+Righe: Class used to represent database rows. It is used to perform calculations on the query results.
+Rule: Class used for: dynamic creation of queries to be submitted to the database, calculation of support and confidence, printing of results.
 
-C'è ancora da: sistemare la lettura degli input, effettuare test e controllare se l'output ottenuto rispecchia il calcolo
+
+Feature work:
+GUI for set the X and Y values.
+
+
