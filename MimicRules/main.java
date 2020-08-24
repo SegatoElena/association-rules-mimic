@@ -1,7 +1,11 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class main {
 	/*
@@ -23,27 +27,68 @@ public class main {
 	    
 	    //DEBUG VALUES
 	    Boolean check = false;
-	    String[] x = new String[2];
-	    x[0] = "measure";
-	    x[1] = "trend_pre";
-	    String[] yColumn = {"event"};
+	    LinkedList<String> inputValues = new LinkedList<String>();
+	    String yColumn = "";
+
+    	System.out.println("Insert the parameters: (x-value | y-value)\n");
+	    while(true) {
+	    	try {
+	            BufferedReader reader =
+	                    new BufferedReader(new InputStreamReader(System.in));
+	            String value = reader.readLine();
+	            
+	            if (value.charAt(0) == 'x') {
+	            	inputValues.add(value.replace("x-", ""));
+	            } else {
+	            	yColumn = value.replace("y-", "");
+	            	break;
+	            }
+	    	} catch (Exception e) { 
+	    		System.out.print("Error occurred" + e.toString());
+	    		System.exit(0);
+	    	}
+	    }
 	    
-	    rule.checkElement(rule.columnNumber, yColumn[0], x);
+	    rule.SetColumn(inputValues.size()+1);
+	    rule.checkElement(yColumn, inputValues);
 	    
-	    // Se i parametri scelti come input e output sono adeguati e non presentano uguaglianze, allora viene eseguito il calcolo.
-		if (!check) {
+	    System.out.println("> ELABORATION ");
+	    if (!check) {
 			rule.xParameters = new LinkedList<String>();
+			String yString;
 			
-			//DEBUG VALUES
-			rule.xParameters.add("Respiratory Rate");
-			rule.xParameters.add("STEADY");
-			String yString = "event";
+			/*System.out.println("Insert the parameters X:\n");
+			for(int i = 0; i < inputValues.size()-1; i++) {
+		    	try {
+		            BufferedReader reader =
+		                    new BufferedReader(new InputStreamReader(System.in));
+		            String value = reader.readLine();
+		            
+		            rule.xParameters.add(value);
+		            
+		    	} catch (Exception e) { 
+		    		System.out.print("Error occurred" + e.toString());
+		    		System.exit(0);
+		    	}
+			}
+			try {
+	            BufferedReader reader =
+	                    new BufferedReader(new InputStreamReader(System.in));
+	            String value = reader.readLine();
+	            
+	            yString = value;
+	            
+	    	} catch (Exception e) { 
+	    		System.out.print("Error occurred" + e.toString());
+	    		System.exit(0);
+	    	}
 			
+			*/
 			//Query per contare il numero di elementi nella tabella sorgente
 			try {
 				ResultSet denominatore = connection.DBReplay("SELECT COUNT(id) AS total FROM tefd.atear_divided_results");
 				denominatore.next();
-			    rule.numberRow = Integer.parseInt(denominatore.getString(1));
+			    rule.SetRow(Integer.parseInt(denominatore.getString(1)));
 			} catch (Exception e) {
 	  	         e.printStackTrace();
 	  	         System.out.println(e);
@@ -51,7 +96,15 @@ public class main {
 	  	         System.exit(0);
 			}
 			
+			 Object[] objArray = inputValues.toArray(); 
+			  
+		        // Convert Object[] to String[] 
+		      String[] x = Arrays.copyOf(objArray, 
+		                                      objArray.length, 
+		                                      String[].class); 
 			
+			//String[] x = inputValues.toArray(new String[inputValues.size()]);
+			System.out.println(Arrays.toString(x));
 			//Costruisco in modo dinamico la query per ottenere tutti i valori della mia X
 			String selectSql = rule.QueryGenerator(x);
 			System.out.println(selectSql);
@@ -77,6 +130,7 @@ public class main {
 			//Fare più volte la query epr ogni riga del support
 			System.out.println("X -> Y | SUPPORT (%) | CONFIDENCE (%)");
 			for (int i = 0; i < rule.xList.size(); i++) {
+				//cambiare xllist e ylist con il solo indice
 				String selectSql2 = rule.QueryGenerator(x, yColumn, rule.xList.get(i), rule.yList.get(i).riga.get(0));
 				System.out.println(selectSql2);
 				try {
@@ -96,6 +150,6 @@ public class main {
 				}
 			}
 			System.out.print("DONE");
-		}
+		} else { System.exit(0); }
 	}
 }

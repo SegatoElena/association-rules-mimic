@@ -28,8 +28,8 @@ public class Rule {
     public List<Righe> yList;
     public List<CountY> countList;
 	public List<String> xParameters;
-    int columnNumber;
-    int numberRow;
+    private int columnNumber;
+    private int numberRow;
     
     /*
      * Costruttore vuoto della classe Rule. Inizializza tutte le variabili.
@@ -39,10 +39,25 @@ public class Rule {
 	    yList = new LinkedList<Righe>();
 	    countList = new LinkedList<CountY>();
 	    xParameters = new LinkedList<String>();
-	    columnNumber = 3;
+	    columnNumber = 0;
 	    numberRow = 0;
     }
     
+    public void SetColumn(int value) {
+    	columnNumber = value;
+    }
+    
+    public int GetColumn() {
+    	return columnNumber;
+    }
+    
+    public void SetRow(int value) {
+    	numberRow = value;
+    }
+    
+    public int GetRow() {
+    	return numberRow;
+    }
 	/*
 	 * Metodo che controlla che la colonna di output(yColumn) non sia utilizzata anche come valore di input.
 	 * columnNumber: 		numero di colonne della tabella
@@ -52,9 +67,9 @@ public class Rule {
 	 * return: 				true se l'elemento yColumn è presente nella lista x
 	 * 						false altrimenti
 	 */
-	public boolean checkElement(int columnNumber, String yColumn,String[] x) {
+	public boolean checkElement(String yColumn, LinkedList<String> x) {
 		for(int i = 0; i < columnNumber-1; i++) {
-	    	if(yColumn.equals(x[i])) {
+	    	if(yColumn.equals(x.get(i))) {
 	    		return true;
 	    	}
 	    }
@@ -76,8 +91,6 @@ public class Rule {
 			xList.add(tmp);
 			yList.add(new Righe(resultSet.getString(columnNumber)));
 		}
-		
-		System.out.println("> LIST'S CREATED");
 	}
 	
 	/*
@@ -89,7 +102,7 @@ public class Rule {
 	 */
 	public void PrintResults(ResultSet resultSet, int index) throws SQLException {
 		while(resultSet.next()) {
-			System.out.println(xList.get(index).toString() + " -> " + resultSet.getString(1) + " | "
+			System.out.println(xList.get(index).toString() + " -> " + resultSet.getString(1) + " | " +
 				+ (Integer.parseInt(yList.get(0).toString().replace(" ", "")) / (float)numberRow ) * 100.0 + "%" 
 				+ " | " + (Integer.parseInt(resultSet.getString(2)) / (float)(Integer.parseInt(yList.get(0).toString().replace(" ", "")))) * 100.0 + "%" );
 			
@@ -108,7 +121,7 @@ public class Rule {
 		selectSql += Arrays.toString(x).replace("[", "").replace("]", "") + ", COUNT(*)";	
 		selectSql += " FROM tefd.atear_divided_results GROUP BY " + Arrays.toString(x).replace("[", "").replace("]", "")	
 				+ " HAVING COUNT(*) > (" + this.numberRow*0.01 + ");";	        
-
+		
 		return selectSql;
 	}
 	
@@ -122,21 +135,21 @@ public class Rule {
 	 * return:
 	 * selectSql: query ottenuta dalla combinazione dei valori ricevuti in input
 	 */
-	public String QueryGenerator(String[] x, String[] y, Righe values, String total) {
-		String selectSql = "SELECT "; 
-		selectSql += Arrays.toString(y).replace("[", "").replace("]", "") + ", COUNT(*)";	
+	public String QueryGenerator(String[] x, String y, Righe values, String total) {
+				String selectSql = "SELECT "; 
+		selectSql += y.replace("[", "").replace("]", "") + ", COUNT(*)";	
 		selectSql += " FROM tefd.atear_divided_results" ;
 				
 		String tmp = " WHERE ";
 		
 		tmp += Arrays.toString(x).replace("[", "");
 				
-		for (int i = 0; i < values.riga.size()-1; i++) {
-			tmp = tmp.replace(",", " = '" + values.riga.get(i) + "' AND ");
+		for (int i = 0; i < values.riga.size(); i++) {
+			tmp = tmp.replaceFirst(",", " = '" + values.get().get(i) + "' AND ");
 		}
 				
-		tmp = tmp.replace("]", "= '" + values.riga.get(values.riga.size()-1))
-			+ "' GROUP BY " + Arrays.toString(y).replace("[", "").replace("]", "")	
+		tmp = tmp.replace("]", "= '" + values.get().get(values.get().size()-1))
+			+ "' GROUP BY " + y.replace("[", "").replace("]", "")	
 			+ " HAVING COUNT(*) > (" + Integer.parseInt(total)*0.01 + ")"
 			+ " ORDER BY COUNT(*) DESC;";
 		
