@@ -1,25 +1,10 @@
-import javax.swing.JOptionPane;
-
-
-import java.awt.EventQueue;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-//import java.sql.SQLException;
-import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.swing.JOptionPane;
 
 public class Rule {
 	
@@ -41,6 +26,22 @@ public class Rule {
 	    xParameters = new LinkedList<String>();
 	    columnNumber = 0;
 	    numberRow = 0;
+    }
+    
+    public void SetXList(Righe tmp) {
+    	xList.add(tmp);
+    }
+    
+    public Righe GetXList(int index) {
+    	return xList.get(index);
+    }
+    
+    public void SetYList(Righe tmp) {
+    	yList.add(tmp);
+    }
+    
+    public Righe GetYList(int index) {
+    	return yList.get(index);
     }
     
     public void SetColumn(int value) {
@@ -68,7 +69,7 @@ public class Rule {
 	 * 						false altrimenti
 	 */
 	public boolean checkElement(String yColumn, LinkedList<String> x) {
-		for(int i = 0; i < columnNumber-1; i++) {
+		for(int i = 0; i < GetColumn()-1; i++) {
 	    	if(yColumn.equals(x.get(i))) {
 	    		return true;
 	    	}
@@ -84,13 +85,14 @@ public class Rule {
 	 */
 	public void XYList(ResultSet resultSet) throws SQLException {
 		Righe tmp;
-		while (resultSet.next()) {
+		
+		do  {
 			tmp = new Righe();
-			for(int j = 1; j < columnNumber; j++) 
+			for(int j = 1; j < GetColumn(); j++) 
 				tmp.set(resultSet.getString(j));
-			xList.add(tmp);
-			yList.add(new Righe(resultSet.getString(columnNumber)));
-		}
+			SetXList(tmp);
+			SetYList(new Righe(resultSet.getString(GetColumn())));
+		} while(resultSet.next());
 	}
 	
 	/*
@@ -101,12 +103,13 @@ public class Rule {
 	 * return: void
 	 */
 	public void PrintResults(ResultSet resultSet, int index) throws SQLException {
-		while(resultSet.next()) {
-			System.out.println(xList.get(index).toString() + " -> " + resultSet.getString(1) + " | " +
-				+ (Integer.parseInt(yList.get(0).toString().replace(" ", "")) / (float)numberRow ) * 100.0 + "%" 
-				+ " | " + (Integer.parseInt(resultSet.getString(2)) / (float)(Integer.parseInt(yList.get(0).toString().replace(" ", "")))) * 100.0 + "%" );
-			
-		}
+		DecimalFormat df = new DecimalFormat("##.##");
+		df.setRoundingMode(RoundingMode.DOWN);
+		String supp = df.format(((Integer.parseInt(GetYList(index).toString().replace(" ", "")) / (float)GetRow() ) * 100.0));
+		String conf = df.format(((Integer.parseInt(resultSet.getString(2)) / (float)(Integer.parseInt(GetYList(index).toString().replace(" ", "")))) * 100.0));
+		System.out.println(GetXList(index).toString() + " -> " + resultSet.getString(1) + " | "
+			+ supp + "%" 
+			+ " | " + conf + "%" );
 	}
 	
 	
@@ -116,12 +119,12 @@ public class Rule {
 	 * return:
 	 * selectSql: query ottenuta dalla combinazione dei valori ricevuti in input
 	 */
-	public String QueryGenerator(String[] x) {
+	public String QueryGenerator(String[] x, double param) {
 		String selectSql = "SELECT "; 
 		selectSql += Arrays.toString(x).replace("[", "").replace("]", "") + ", COUNT(*)";	
 		selectSql += " FROM tefd.atear_divided_results GROUP BY " + Arrays.toString(x).replace("[", "").replace("]", "")	
-				+ " HAVING COUNT(*) > (" + this.numberRow*0.01 + ");";	        
-		
+				+ " HAVING COUNT(*) > (" + GetRow()*param + ");";	        
+
 		return selectSql;
 	}
 	
@@ -135,7 +138,7 @@ public class Rule {
 	 * return:
 	 * selectSql: query ottenuta dalla combinazione dei valori ricevuti in input
 	 */
-	public String QueryGenerator(String[] x, String y, Righe values, String total) {
+	public String QueryGenerator(String[] x, String y, Righe values, String total, double param) {
 				String selectSql = "SELECT "; 
 		selectSql += y.replace("[", "").replace("]", "") + ", COUNT(*)";	
 		selectSql += " FROM tefd.atear_divided_results" ;
@@ -150,7 +153,7 @@ public class Rule {
 				
 		tmp = tmp.replace("]", "= '" + values.get().get(values.get().size()-1))
 			+ "' GROUP BY " + y.replace("[", "").replace("]", "")	
-			+ " HAVING COUNT(*) > (" + Integer.parseInt(total)*0.01 + ")"
+			+ " HAVING COUNT(*) > (" + Integer.parseInt(total)*param + ")"
 			+ " ORDER BY COUNT(*) DESC;";
 		
 		selectSql += tmp;
