@@ -45,11 +45,7 @@ public class Phases {
 				System.out.println("Insert a parameter for the support: (es: 0.01)");
 				
 				rule.SetColumn(dataInput.getSizeInput()+1);
-				// Controllo sulla correttezza dei parametri inseriti. Le X non devono contenere i valori in Y e viceversa
-		    	if (rule.checkElement(dataInput.getYColumn(), dataInput.getInputValues())) 
-		    		throw new IOException();
 			    dataInput.swapItems(connection);  
-		        dataInput.setYColumn(connection.getColumnName(Integer.parseInt(dataInput.getYColumn())));
 				dataInput.InputValues(2);  				
 				break;
 			default:
@@ -111,6 +107,11 @@ public class Phases {
 	// Metodo per il calcolo della confidence 
 	public void confidenceCalc(Rule rule, DataInput dataInput, DBConnector connection) throws SQLException {
 		ResultSet resultSet2 = null;	
+		if (dataInput.getCalc() == 1) {
+			System.out.println("X -> Y | SUPPORT (%) | CONFIDENCE (%)");
+		} else {
+			System.out.println("X -> Y | CONFIDENCE (%)");
+		}	
 		for (int i = 0; i < rule.xList.size(); i++) {
 			String selectSql2 = rule.QueryGenerator(x, 
 					dataInput.getYColumn(), 

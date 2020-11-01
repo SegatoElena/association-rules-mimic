@@ -100,7 +100,6 @@ public class Rule {
 	 * return: void
 	 */
 	public void PrintResults(ResultSet resultSet, int index) throws SQLException {
-		System.out.println("X -> Y | SUPPORT (%) | CONFIDENCE (%)");
 		DecimalFormat df = new DecimalFormat("##.##");
 		df.setRoundingMode(RoundingMode.DOWN);
 		String supp = df.format(((Integer.parseInt(GetYList(index).toString().replace(" ", "")) / (float)GetRow() ) * 100.0));
@@ -117,7 +116,6 @@ public class Rule {
 	 * return: void
 	 */
 	public void PrintConfidence(ResultSet resultSet, int index) throws SQLException {
-		System.out.println("X -> Y | CONFIDENCE (%)");
 		DecimalFormat df = new DecimalFormat("##.##");
 		df.setRoundingMode(RoundingMode.DOWN);
 		String conf = df.format(((Integer.parseInt(resultSet.getString(2)) / (float)(Integer.parseInt(GetYList(index).toString().replace(" ", "")))) * 100.0));
