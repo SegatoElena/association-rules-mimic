@@ -42,9 +42,10 @@ public class Phases {
 			case 2: // Input dei parametri per il calcolo della support
 				System.out.println("Insert the parameters X: (es: 0, 31, 1)\n");
 		        dataInput.InputValues(0); 
-				System.out.println("Insert a parameter for the support: (es: 0.01)");		
+				System.out.println("Insert a parameter for the support: (es: 0.01)");
+				
 				rule.SetColumn(dataInput.getSizeInput()+1);
-			    dataInput.swapItems(connection); 
+			    dataInput.swapItems(connection);  
 				dataInput.InputValues(2);  				
 				break;
 			default:
@@ -88,7 +89,6 @@ public class Phases {
 		if (dataInput.getCalc() == 2) {
 			System.out.println("> CALCULATING SUPPORT DONE");
 			System.out.println();
-			System.out.println("X  | SUPPORT (%) ");
 			rule.printSupport();
 			System.out.print("> DONE");
 		}
@@ -107,7 +107,6 @@ public class Phases {
 	// Metodo per il calcolo della confidence 
 	public void confidenceCalc(Rule rule, DataInput dataInput, DBConnector connection) throws SQLException {
 		ResultSet resultSet2 = null;	
-
 		if (dataInput.getCalc() == 1) {
 			System.out.println("X -> Y | SUPPORT (%) | CONFIDENCE (%)");
 		} else {
