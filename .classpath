@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="Mimic3_Tesi/src"/>
-	<classpathentry kind="lib" path="Mimic3_Tesi/jgoodies-forms-1.8.0-sources.jar"/>
-	<classpathentry kind="lib" path="Mimic3_Tesi/jgoodies-forms-1.8.0.jar"/>
-	<classpathentry kind="lib" path="Mimic3_Tesi/lib/postgresql-42.2.8.jar"/>
-	<classpathentry kind="output" path="Mimic3_Tesi/bin"/>
-</classpath>
