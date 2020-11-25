@@ -36,14 +36,16 @@ public class main {
 			// durante la fasi di inserimento dei parametri
 			switch (dataInput.getCalc()) {
 			case 1:
-			case 3:
 				phases.supportCalc(rule, dataInput, connection);
 				phases.confidenceCalc(rule, dataInput, connection);
+				//phases.createTableTep(connection);
+				//phases.insertTepIntoDB(connection, rule);
 				break;
 			case 2:
 				phases.supportCalc(rule, dataInput, connection);
+				//phases.createTableTep(connection);
+				//phases.insertTepIntoDB(connection, rule);
 				break;
-
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + dataInput.getCalc());
 			}

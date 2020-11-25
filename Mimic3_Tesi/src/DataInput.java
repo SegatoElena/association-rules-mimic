@@ -16,6 +16,7 @@ public class DataInput {
 	private double paramC;
 	private double paramS;
 	private int calc;
+	private int tep_id;
 	
 	/*
 	 * Costruttore vuto per la classe DataInput
@@ -26,6 +27,7 @@ public class DataInput {
 		paramC = 0;
 		paramS = 0;
 		calc = 1;
+		tep_id = -1;
 	}
 	
 	public void setReader() {
@@ -54,6 +56,14 @@ public class DataInput {
 	
 	public String GetInputValuesElement(int i) {
 		return inputValues.get(i);
+	}
+	
+	public void setTepid(int tep_id_value) {
+		tep_id = tep_id_value;
+	}
+	
+	public int getTepid() {
+		return tep_id;
 	}
 	
 	public void setYColumn(String tmp) {

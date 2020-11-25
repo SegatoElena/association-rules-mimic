@@ -1,10 +1,12 @@
 import java.math.RoundingMode;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
 
 public class Rule {
 	
@@ -29,13 +31,17 @@ public class Rule {
     	xList.add(tmp);
     }
     
-    public Righe GetXList(int index) {
+    public Righe GetXList(int index) {    	
     	return xList.get(index);
     }
     
     public void SetYList(Righe tmp) {
     	yList.add(tmp);
     }
+    
+    public int YListSize() {
+    	return yList.size();
+    }   
     
     public Righe GetYList(int index) {
     	return yList.get(index);
@@ -82,11 +88,17 @@ public class Rule {
 	 */
 	public void XYList(ResultSet resultSet) throws SQLException {
 		Righe tmp;
-		
+		ResultSetMetaData rsmd = resultSet.getMetaData();
 		do  {
 			tmp = new Righe();
-			for(int j = 1; j < GetColumn(); j++) 
+			for(int j = 1; j <= GetColumn(); j++) 
 				tmp.set(resultSet.getString(j));
+			for (int i = 1; i <= GetColumn()+1; i++) {
+		        if (i > 1) System.out.print(",  ");
+		        String columnValue = resultSet.getString(i);
+		        System.out.print(columnValue + " " + rsmd.getColumnName(i));
+		    }
+		    System.out.println("");
 			SetXList(tmp);
 			SetYList(new Righe(resultSet.getString(GetColumn())));
 		} while(resultSet.next());
@@ -100,7 +112,6 @@ public class Rule {
 	 * return: void
 	 */
 	public void PrintResults(ResultSet resultSet, int index) throws SQLException {
-		System.out.println("X -> Y | SUPPORT (%) | CONFIDENCE (%)");
 		DecimalFormat df = new DecimalFormat("##.##");
 		df.setRoundingMode(RoundingMode.DOWN);
 		String supp = df.format(((Integer.parseInt(GetYList(index).toString().replace(" ", "")) / (float)GetRow() ) * 100.0));
@@ -117,7 +128,6 @@ public class Rule {
 	 * return: void
 	 */
 	public void PrintConfidence(ResultSet resultSet, int index) throws SQLException {
-		System.out.println("X -> Y | CONFIDENCE (%)");
 		DecimalFormat df = new DecimalFormat("##.##");
 		df.setRoundingMode(RoundingMode.DOWN);
 		String conf = df.format(((Integer.parseInt(resultSet.getString(2)) / (float)(Integer.parseInt(GetYList(index).toString().replace(" ", "")))) * 100.0));
@@ -130,15 +140,28 @@ public class Rule {
 	 * 
 	 * return: void
 	 */
-	public void printSupport() {
-		System.out.println("X  | SUPPORT (%) ");
+	public void printSupport(DBConnector connection) {
+		System.out.println("ID  | SUPPORT (%) ");
 		DecimalFormat df = new DecimalFormat("##.##");
 		df.setRoundingMode(RoundingMode.DOWN);
 		for(int index = 0; index < yList.size()-1; index++)  {
 			String supp = df.format(((Integer.parseInt(GetYList(index).toString().replace(" ", "")) / (float)GetRow() ) * 100.0));
-			index++;
-			System.out.println(GetXList(index).toString() + " | " + supp + "%");
+			System.out.println(convertIDIntoString(GetXList(index).toString(), connection) + " | " + supp + "%");
 		}
+	}
+	
+	public String convertIDIntoString(String id, DBConnector connection) {
+		String query = "SELECT description "
+				+ "FROM trend_event_patterns "
+				+ "WHERE tep_id = " + id + ";";
+		try {
+			ResultSet resultset = connection.DBReplay(query);
+			if (resultset.next())
+				return resultset.getString(1).replace("_", " - ");
+		} catch (SQLException e) {
+			System.out.println("Error during database interrogation" + e.toString());
+		}
+		return "";
 	}
 	
 	/*
@@ -150,7 +173,16 @@ public class Rule {
 	public String QueryGenerator(String[] x, double param) {
 		String selectSql = "SELECT "; 
 		selectSql += Arrays.toString(x).replace("[", "").replace("]", "") + ", COUNT(*)";	
-		selectSql += " FROM tefd.atear_divided_results GROUP BY " + Arrays.toString(x).replace("[", "").replace("]", "")	
+		selectSql += " FROM public.icustay_tep GROUP BY " + Arrays.toString(x).replace("[", "").replace("]", "")	
+				+ " HAVING COUNT(*) > (" + GetRow()*param + ");";	        
+
+		return selectSql;
+	}
+	
+	public String QueryGeneratorWithTepid(double param) {
+		String selectSql = "SELECT tep_id, COUNT(*)";	
+		selectSql += " FROM public.icustay_tep "
+				+ "GROUP BY tep_id"
 				+ " HAVING COUNT(*) > (" + GetRow()*param + ");";	        
 
 		return selectSql;
@@ -169,7 +201,7 @@ public class Rule {
 	public String QueryGenerator(String[] x, String y, Righe values, String total, double param) {
 		String selectSql = "SELECT "; 
 		selectSql += y.replace("[", "").replace("]", "") + ", COUNT(*)";	
-		selectSql += " FROM tefd.atear_divided_results" ;
+		selectSql += " FROM public.icustay_tep" ;
 				
 		String tmp = " WHERE ";
 		

@@ -7,6 +7,7 @@ public class Phases {
 	
 	private String[] x;
 	public Phases() { }
+	private ResultSet resultSet;
 	
 	// Metodo per instanziare un oggetto DBConnector definendo una stringa di connessione da utilizzare
 	public DBConnector connection() throws SQLException {
@@ -22,29 +23,29 @@ public class Phases {
 		// Gestione degli input a seconda delle scelte effettuate dall'utente
 		switch (dataInput.getCalc()) {
 			case 1:// Input dei parametri per il calcolo della support e confidence
-			case 3:
-				System.out.println("Insert the parameters X: (es: 0, 31, 1)\n");
+				/*System.out.println("Insert the parameters X: (es: 0, 31, 1)\n");
 		        dataInput.InputValues(0); 
 			    System.out.println("Insert the parameter Y: (es: 2)\n");
-				dataInput.InputValues(1);  
+				dataInput.InputValues(1);  */
 				System.out.println("Insert a parameter for the support: (es: 0.01)");
 				
 				rule.SetColumn(dataInput.getSizeInput()+1);
 				// Controllo sulla correttezza dei parametri inseriti. Le X non devono contenere i valori in Y e viceversa
-		    	if (rule.checkElement(dataInput.getYColumn(), dataInput.getInputValues())) 
-		    		throw new IOException();
-			    dataInput.swapItems(connection);  
-		        dataInput.setYColumn(connection.getColumnName(Integer.parseInt(dataInput.getYColumn())));
-				dataInput.InputValues(2);  
+		    	//if (rule.checkElement(dataInput.getYColumn(), dataInput.getInputValues())) 
+		    	//	throw new IOException();
+			    //dataInput.swapItems(connection);  
+		        //dataInput.setYColumn(connection.getColumnName(Integer.parseInt(dataInput.getYColumn())));
+				//dataInput.InputValues(2);  
 				System.out.println("Insert a parameter for the confidence: (es: 0.01)");
 				dataInput.InputValues(3); 
 				break;				
 			case 2: // Input dei parametri per il calcolo della support
-				System.out.println("Insert the parameters X: (es: 0, 31, 1)\n");
-		        dataInput.InputValues(0); 
-				System.out.println("Insert a parameter for the support: (es: 0.01)");		
+				//System.out.println("Insert the parameters X: (es: 0, 31, 1)\n");
+		        //dataInput.InputValues(0); 
+				System.out.println("Insert a parameter for the support: (es: 0.01)");
+				
 				rule.SetColumn(dataInput.getSizeInput()+1);
-			    dataInput.swapItems(connection); 
+			    //dataInput.swapItems(connection);  
 				dataInput.InputValues(2);  				
 				break;
 			default:
@@ -54,13 +55,13 @@ public class Phases {
 	
 	// Metodo per richiedere all'utente che calcoli eseguire durante l'esecuzioe del programma
 	public void insertCalc(DataInput dataInput) throws IOException {
-		System.out.println("Calculate:\n 1- Support/Confidance \n 2- Support \n 3- Confidance \n\nInsert: ");
+		System.out.println("Calculate:\n 1- Support/Confidance \n 2- Support\n\nInsert: ");
 		dataInput.InputValues(4);
 	}
 	
 	// Metodo per calcolare il numero totale di righe all'interno del DB
 	public ResultSet getTotalRowsOfDatabase(Rule rule, DBConnector connection) throws SQLException {
-		ResultSet denominatore = connection.DBReplay("SELECT COUNT(id) AS total FROM tefd.atear_divided_results");
+		ResultSet denominatore = connection.DBReplay("SELECT COUNT(id) AS total FROM public.icustay_tep");
 		if(denominatore.next() == false) {
 			throw new SQLException("denominatore empty");
 		} else {
@@ -72,10 +73,9 @@ public class Phases {
 	
 	// Calcolo del valore della support
 	public void supportCalc(Rule rule, DataInput dataInput, DBConnector connection) throws SQLException {
-		createVariable(rule, dataInput);
-		String selectSql = rule.QueryGenerator(x, dataInput.getParamS());
+		String selectSql = rule.QueryGeneratorWithTepid(dataInput.getParamS());
 		
-		ResultSet resultSet = connection.DBReplay(selectSql);
+		resultSet = connection.DBReplay(selectSql);
 		//System.out.println(selectSql);	
 		if(resultSet.next() == false) {
 			throw new SQLException("ResultSet empty: " + selectSql);
@@ -88,8 +88,7 @@ public class Phases {
 		if (dataInput.getCalc() == 2) {
 			System.out.println("> CALCULATING SUPPORT DONE");
 			System.out.println();
-			System.out.println("X  | SUPPORT (%) ");
-			rule.printSupport();
+			rule.printSupport(connection);
 			System.out.print("> DONE");
 		}
 	}
@@ -104,10 +103,32 @@ public class Phases {
 		System.out.println(Arrays.toString(x));		
 	}	
 	
+	/*public void createTableTep(DBConnector connection) throws SQLException {
+		String query = "CREATE TABLE trend_event_pattern ( "
+				+ "id SERIAL PRIMARY KEY,"
+				+ "tep VARCHAR(100) UNIQUE NOT NULL"
+				+ ")";
+
+		connection.executeQuery(query);
+
+	}
+	
+	public void insertTepIntoDB(DBConnector connection, Rule rule) throws SQLException {
+		String query;
+		for (int i = 0; i < rule.YListSize(); i++) {
+			query = "INSERT INTO trend_event_pattern(tep) VALUES ('"
+			+ rule.GetXList(i).toString().replace(" ", "_") + "');";
+			try {
+				connection.executeQuery(query);
+			} catch (org.postgresql.util.PSQLException e) {
+				System.out.println("Duplicate entry...");
+			}
+		}
+	}*/
+	
 	// Metodo per il calcolo della confidence 
 	public void confidenceCalc(Rule rule, DataInput dataInput, DBConnector connection) throws SQLException {
 		ResultSet resultSet2 = null;	
-
 		if (dataInput.getCalc() == 1) {
 			System.out.println("X -> Y | SUPPORT (%) | CONFIDENCE (%)");
 		} else {
@@ -132,11 +153,7 @@ public class Phases {
 		if(resultSet.next() == false) {
 			throw new SQLException("ResultSet empty: " + selectSql);
 		} else {
-			if (dataInput.getCalc() == 1) {
 				rule.PrintResults(resultSet, index);
-			} else {
-				rule.PrintConfidence(resultSet, index);
-			}			
 		}
 	}
 }

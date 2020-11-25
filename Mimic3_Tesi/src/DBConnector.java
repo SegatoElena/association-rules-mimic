@@ -24,7 +24,7 @@ public class DBConnector {
 	 */
 	public DBConnector(String str) throws SQLException {
 		connection = DriverManager.getConnection(str.toString(), "postgres", "postgres");
-		connection.setSchema("tefd");
+		connection.setSchema("public");
 		
 		String schema = connection.getSchema();
 		
@@ -40,7 +40,7 @@ public class DBConnector {
 	// stampa il nome di tutte le colonne affiancate da un numero identificativo
 	// inoltre salva il nome delle singole colonne all'interno di una lista
 	public void printColumn() throws SQLException {	
-		ResultSet rs = DBReplay("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'atear_divided_results';");
+		ResultSet rs = DBReplay("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'icustay_tep';");
 		if(rs.next() == false) {
 			throw new SQLException("Empty table");
 		} else {
@@ -63,6 +63,10 @@ public class DBConnector {
 	public ResultSet DBReplay(String query) throws SQLException {
 		statement = connection.createStatement();
 		return statement.executeQuery(query);
+	}
+	
+	public void executeQuery(String query) throws SQLException {
+		connection.createStatement().execute(query);
 	}
 	
 	// Metodo per aggiungere un valore alla lista contente tutti i nomi delle colonne
