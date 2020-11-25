@@ -45,7 +45,11 @@ public class Phases {
 				System.out.println("Insert a parameter for the support: (es: 0.01)");
 				
 				rule.SetColumn(dataInput.getSizeInput()+1);
+<<<<<<< HEAD
 			    //dataInput.swapItems(connection);  
+=======
+			    dataInput.swapItems(connection);  
+>>>>>>> master
 				dataInput.InputValues(2);  				
 				break;
 			default:
